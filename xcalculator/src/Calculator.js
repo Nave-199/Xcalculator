@@ -1,64 +1,55 @@
 import React, { useState } from "react";
 
 const Calculator = () => {
-  const [input, setInput] = useState("");
-  const [result, setResult] = useState("");
+  const [fullInput,setFullInput] = useState('');
+  const [answer,setAnswer] = useState('');
 
-  const handleClick = (value) => {
-    if (result && value !== "C" && value !== "=") {
-      setInput(value);
-      setResult("");
-    } else {
-      setInput(input + value);
-    }
-  };
+ const handleInput = (value) => {
+      setFullInput(prev => prev+value)
+ }
 
-  const handleClear = () => {
-    setInput("");
-    setResult("");
-  };
+ const handleClear = () => {
+      setFullInput('');
+      setAnswer('');
+ }
 
-  const handleofEvaluate = () => {
-    try {
-      if (input.trim() === "") {
-        setResult("Error");
-      } else {
-        const evaluatedResult = eval(input);
-        if (evaluatedResult === Infinity) {
-          setResult("Infinity");
-        } else if (isNaN(evaluatedResult)) {
-          setResult("NaN");
-        } else {
-          setResult(evaluatedResult);
-        }
-      }
-    } catch (error) {
-      setResult("Error");
-    }
-  };
-  return (
-    <div>
-      <h1>React Calculator</h1>
-      <input type="text" value={result || input} readOnly />
-      <div className="buttons">
-        <button onClick={() => handleClick("7")}>7</button>
-        <button onClick={() => handleClick("8")}>8</button>
-        <button onClick={() => handleClick("9")}>9</button>
-        <button onClick={() => handleClick("+")}>+</button>
-        <button onClick={() => handleClick("4")}>4</button>
-        <button onClick={() => handleClick("5")}>5</button>
-        <button onClick={() => handleClick("6")}>6</button>
-        <button onClick={() => handleClick("-")}>-</button>
-        <button onClick={() => handleClick("1")}>1</button>
-        <button onClick={() => handleClick("2")}>2</button>
-        <button onClick={() => handleClick("3")}>3</button>
-        <button onClick={() => handleClick("*")}>*</button>
-        <button onClick={() => handleClear()}>C</button>
-        <button onClick={() => handleClick("0")}>0</button>
-        <button onClick={() => handleofEvaluate()}>=</button>
-        <button onClick={() => handleClick("/")}>/</button>
+ const handleEquation = () => {
+      if(fullInput===''){
+          setAnswer('Error');
+      } else{
+          try{
+              // eslint-disable-next-line no-eval
+              setAnswer(eval(fullInput));
+          } catch(err){
+              setAnswer('Error');
+          }
+      }   
+ }
+
+  return ( 
+      <div className="calculator">
+          <h1>React Calculator</h1>
+          <input type="text" value={fullInput} readOnly/>
+          <div>{answer}</div>
+          <div className="btns-group">
+              <button className="btn" onClick={()=>handleInput('7')}>7</button>
+              <button className="btn" onClick={()=>handleInput('8')}>8</button>
+              <button className="btn" onClick={()=>handleInput('9')}>9</button>
+              <button className="btn" onClick={()=>handleInput('+')}>+</button>
+              <button className="btn" onClick={()=>handleInput('4')}>4</button>
+              <button className="btn" onClick={()=>handleInput('5')}>5</button>
+              <button className="btn" onClick={()=>handleInput('6')}>6</button>
+              <button className="btn" onClick={()=>handleInput('-')}>-</button>
+              <button className="btn" onClick={()=>handleInput('1')}>1</button>
+              <button className="btn" onClick={()=>handleInput('2')}>2</button>
+              <button className="btn" onClick={()=>handleInput('3')}>3</button>
+              <button className="btn" onClick={()=>handleInput('*')}>*</button>
+              <button className="btn" onClick={handleClear}>C</button>
+              <button className="btn" onClick={()=>handleInput('0')}>0</button>
+              <button className="btn" onClick={handleEquation}>=</button>
+              <button className="btn" onClick={()=>handleInput('/')}>/</button>
+          </div>
       </div>
-    </div>
   );
 };
 
